@@ -1,63 +1,55 @@
-from saludo.bienvenida import bienvenida_usuario
-from detalle.datos_venta import precio_producto, cantidad_producto, detalle_venta
+from saludo.bienvenida import bienvenida_usuario, menu_inicio
+from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas
+
 inventario = []
 opcion = 1
 
+def buscar_producto(inventario, producto_buscado):
+    for producto in inventario:
+        if producto["nombre"] == producto_buscado:
+         return producto
+    return None 
+
 bienvenida_usuario()
+# Empieza el bucle que hace que el menú funcione
+while opcion != 0:
+    menu_inicio()
+    while True:
+        try:
+            opcion = int(input("Ingrese la opcion que va a elegir,\n"))
+            break
+        except ValueError:
+            print("Ingrese un número valido.")
 
-while opcion < 4:
+    print("-" * 60)
 
-    print("---------------------------  MENU  -------------------------")
-    print("-"*60 )
-    print("|          1.<---- Ingresar venta.                        |")
-    print("|          2.<---- Visualizar ventas.                     |")
-    print("|          3.<---- Calcular.                              |")
-    print("|          4.<---- Salir.                                 |")
+    if opcion == 1:
+        print("===================== Agregar producto =====================")
+        insertar_producto(inventario)
 
-    
-    print("-"*60)
+    elif opcion == 2:
+        print("================= Visualizador de ventas ===================")
+        if len(inventario) == 0:
+            print("-" * 60)
+            print("\n No hay datos para mostrar. \n")
+            print("-" * 60)
 
-    opcion = int(input("Ingrese la opcion que va a elegir \n"))
+        else:
+            print("-" * 60)
+            visualizar_ventas(inventario) 
+    elif opcion == 3:
+        total_dinero, total_unidades = calcular_estadistica(inventario)
+        # Se desemapaqueto calcular_estadisticas
+        print("================== CALCULO DE ESTADISTICA ==================")
+        print(f"${total_dinero}, {total_unidades} Unidad(es)")
+        print()
 
-    match opcion:
-        case 1:
-            nombre = input("Ingrese el nombre del producto \n").upper()
+    elif opcion == 4:
+       print("==================== BUSQUEDA PRODUCTOS =====================")
+       nombre = input("Ingrese por favor el nombre del producto.\n")
+       resultado = buscar_producto(inventario, nombre)
+       print()
 
-            precio = precio_producto()
-
-            cantidad=cantidad_producto()
-
-            subtotal = precio * cantidad
-            print("El resumen de su venta:")
-            print(f"PRODUCTO: {nombre}")
-            print(f"CANTIDAD: {cantidad} unidad(es)")
-            print(f"PRECIO:   {precio} Pesos")
-            print(" El subtotal es:", subtotal)
-
-            # crear el diccionario producto_nuevo
-            producto_nuevo = {
-                "nombre": nombre,
-                "precio": precio,
-                "cantidad": cantidad,
-                "subtotal":subtotal
-            }
-            inventario.append(producto_nuevo)
-        case 2:
-            if len(inventario) == 0:
-                print("-"*60)
-                print("\n No hay datos para mostrar. \n")
-                print("-"*60)
-
-            else:
-                print("-"*60)
-
-                for i in inventario:
-                    print(f"PRODUCTO: {i["nombre"]}")
-                    print(f"PRECIO: {i["precio"]}")
-                    print(f"CANTIDAD: {i["cantidad"]}")
-                    print(f"SUBTOTAL: {i["subtotal"]}")
-        case 3:
-            #calcular
-            print("calculo")
-        case 4:
-            print("Saliendo del sistema...")
+    elif opcion == 5:
+        print("Saliendo del sistema...")
+        break
