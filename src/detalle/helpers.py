@@ -1,3 +1,5 @@
+
+
 def precio_producto():
     while True:
                 try:
@@ -7,6 +9,7 @@ def precio_producto():
                     print(
                         "Error: Por favor, ingrese un valor numérico válido para precio.")
     return precio
+
 def cantidad_producto():
     while True:
                 try:
@@ -47,13 +50,35 @@ def visualizar_ventas(inventario):
         print(f"PRECIO: {i["precio"]}")
         print(f"CANTIDAD: {i["cantidad"]}")
         print(f"SUBTOTAL: {i["subtotal"]}")
+        print()
 
 # Funcion para calcular la estadistica 
 def calcular_estadistica(inventario):
-    valor_total_sumado = 0
-    cantidad_total_items = 0
+   if len(inventario) == 0:
+        print("No hay productos en el inventario.")
+        valor_total_sumado = 0
+        cantidad_total_items = 0
+        return valor_total_sumado, cantidad_total_items
+   else:
+        print("No hay productos en el inventario.")
+        valor_total_sumado = 0
+        cantidad_total_items = 0
+        for producto_nuevo in inventario:
+            valor_total_sumado += producto_nuevo["subtotal"]
+            cantidad_total_items += producto_nuevo["cantidad"]
+        return valor_total_sumado, cantidad_total_items
+
+
+def buscar_producto(inventario, Nombre_buscado):
     for producto_nuevo in inventario:
-        valor_total_sumado += producto_nuevo["subtotal"]
-        cantidad_total_items += producto_nuevo["cantidad"]
-    return valor_total_sumado, cantidad_total_items
+        if producto_nuevo["nombre"] == Nombre_buscado:
+            return producto_nuevo
+    print()
+    print(f"El producto {Nombre_buscado} no esta en la lista.")
+    print() 
+    return None
+   
+
+      
+
 

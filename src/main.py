@@ -1,16 +1,12 @@
 from saludo.bienvenida import bienvenida_usuario, menu_inicio
-from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas
+from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas, buscar_producto
 
 inventario = []
+
 opcion = 1
 
-def buscar_producto(inventario, producto_buscado):
-    for producto in inventario:
-        if producto["nombre"] == producto_buscado:
-         return producto
-    return None 
+bienvenida_usuario()    
 
-bienvenida_usuario()
 # Empieza el bucle que hace que el menú funcione
 while opcion != 0:
     menu_inicio()
@@ -38,18 +34,21 @@ while opcion != 0:
             print("-" * 60)
             visualizar_ventas(inventario) 
     elif opcion == 3:
-        total_dinero, total_unidades = calcular_estadistica(inventario)
+        valor_total_sumado, cantidad_total_items = calcular_estadistica(inventario)
         # Se desemapaqueto calcular_estadisticas
-        print("================== CALCULO DE ESTADISTICA ==================")
-        print(f"${total_dinero}, {total_unidades} Unidad(es)")
+        print("================== CALCULO DE ESTADISTICA ==================")           
+        print(f"Valor total del inventario: ${valor_total_sumado}\n {cantidad_total_items} Unidad(es)")
         print()
 
     elif opcion == 4:
        print("==================== BUSQUEDA PRODUCTOS =====================")
-       nombre = input("Ingrese por favor el nombre del producto.\n")
-       resultado = buscar_producto(inventario, nombre)
-       print()
-
+       Nombre_producto = input("Ingrese el nombre del producto: \n").upper()
+       resultado = buscar_producto(inventario, Nombre_producto)
+       if resultado:
+           print(f"Producto encontrado: {resultado["nombre"]}")
+           print(f"PRECIO: {resultado["precio"]}")
+           print(f"CANTIDAD: {resultado["cantidad"]}")
+           print()
     elif opcion == 5:
         print("Saliendo del sistema...")
         break
