@@ -12,7 +12,9 @@ def menu_inicio():
     print("|          2.<---- Visualizar ventas.                      |")
     print("|          3.<---- Calcular.                               |")
     print("|          4.<---- Buscar producto.                        |")
-    print("|          5.<---- Salir.                                  |")
+    print("|          5.<---- Guardar CSV                             |")
+    print("|          6.<---- Salir.                                  |")
+
 
     print("_"*60)
     print()

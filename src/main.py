@@ -1,5 +1,5 @@
 from saludo.bienvenida import bienvenida_usuario, menu_inicio
-from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas, buscar_producto
+from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas, buscar_producto, guardar_csv
 
 inventario = []
 
@@ -12,7 +12,7 @@ while opcion != 0:
     menu_inicio()
     while True:
         try:
-            opcion = int(input("Ingrese la opcion que va a elegir,\n"))
+            opcion = int(input("Ingrese la opcion que va a elegir: \n"))
             break
         except ValueError:
             print("Ingrese un número valido.")
@@ -50,5 +50,8 @@ while opcion != 0:
            print(f"CANTIDAD: {resultado["cantidad"]}")
            print()
     elif opcion == 5:
+        guardar_csv(inventario)
+
+    elif opcion == 6:
         print("Saliendo del sistema...")
         break
