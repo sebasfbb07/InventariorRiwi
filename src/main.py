@@ -1,54 +1,84 @@
 from saludo.bienvenida import bienvenida_usuario, menu_inicio
-from detalle.helpers import calcular_estadistica, insertar_producto, visualizar_ventas, buscar_producto
+from detalle.helpers import (
+    insertar_producto,
+    visualizar_inventario,
+    buscar_producto,
+    actualizar_producto,
+    eliminar_producto,
+    calcular_estadisticas,
+    guardar_csv,
+    cargar_csv
+)
 
 inventario = []
 
-opcion = 1
+opcion = 0
 
-bienvenida_usuario()    
+bienvenida_usuario()
 
-# Empieza el bucle que hace que el menú funcione
-while opcion != 0:
+while opcion != 9:
     menu_inicio()
+
     while True:
         try:
-            opcion = int(input("Ingrese la opcion que va a elegir,\n"))
-            break
+            opcion = int(input("Ingrese la opción que va a elegir: \n"))
+            if opcion < 1 or opcion > 9:
+                print("Ingrese una opción válida entre 1 y 9.")
+            else:
+                break
         except ValueError:
-            print("Ingrese un número valido.")
+            print("Ingrese un número válido.")
 
     print("-" * 60)
 
     if opcion == 1:
-        print("===================== Agregar producto =====================")
+        print("===================== AGREGAR PRODUCTO =====================")
         insertar_producto(inventario)
 
     elif opcion == 2:
-        print("================= Visualizador de ventas ===================")
-        if len(inventario) == 0:
-            print("-" * 60)
-            print("\n No hay datos para mostrar. \n")
-            print("-" * 60)
+        print("=================== MOSTRAR INVENTARIO =====================")
+        visualizar_inventario(inventario)
 
-        else:
-            print("-" * 60)
-            visualizar_ventas(inventario) 
     elif opcion == 3:
-        valor_total_sumado, cantidad_total_items = calcular_estadistica(inventario)
-        # Se desemapaqueto calcular_estadisticas
-        print("================== CALCULO DE ESTADISTICA ==================")           
-        print(f"Valor total del inventario: ${valor_total_sumado}\n {cantidad_total_items} Unidad(es)")
-        print()
+        print("==================== BUSCAR PRODUCTO =======================")
+        nombre_producto = input("Ingrese el nombre del producto: \n").upper()
+        resultado = buscar_producto(inventario, nombre_producto)
+
+        if resultado:
+            print(f"PRODUCTO: {resultado['nombre']}")
+            print(f"PRECIO: {resultado['precio']}")
+            print(f"CANTIDAD: {resultado['cantidad']}")
+            print("-" * 60)
 
     elif opcion == 4:
-       print("==================== BUSQUEDA PRODUCTOS =====================")
-       Nombre_producto = input("Ingrese el nombre del producto: \n").upper()
-       resultado = buscar_producto(inventario, Nombre_producto)
-       if resultado:
-           print(f"Producto encontrado: {resultado["nombre"]}")
-           print(f"PRECIO: {resultado["precio"]}")
-           print(f"CANTIDAD: {resultado["cantidad"]}")
-           print()
+        print("=================== ACTUALIZAR PRODUCTO ====================")
+        nombre_producto = input("Ingrese el nombre del producto a actualizar: \n").upper()
+        actualizar_producto(inventario, nombre_producto)
+
     elif opcion == 5:
+        print("==================== ELIMINAR PRODUCTO =====================")
+        nombre_producto = input("Ingrese el nombre del producto a eliminar: \n").upper()
+        eliminar_producto(inventario, nombre_producto)
+
+    elif opcion == 6:
+        print("==================== ESTADÍSTICAS ==========================")
+        estadisticas = calcular_estadisticas(inventario)
+
+        if estadisticas:
+            print(f"Unidades totales: {estadisticas['unidades_totales']}")
+            print(f"Valor total inventario: ${estadisticas['valor_total']}")
+            print(f"Producto más caro: {estadisticas['producto_mas_caro']['nombre']} - ${estadisticas['producto_mas_caro']['precio']}")
+            print(f"Producto con mayor stock: {estadisticas['producto_mayor_stock']['nombre']} - {estadisticas['producto_mayor_stock']['cantidad']} unidades")
+            print("-" * 60)
+
+    elif opcion == 7:
+        print("====================== GUARDAR CSV =========================")
+        guardar_csv(inventario)
+
+    elif opcion == 8:
+        print("======================= CARGAR CSV =========================")
+        inventario = cargar_csv(inventario)
+
+    elif opcion == 9:
         print("Saliendo del sistema...")
         break
